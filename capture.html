@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Details</title>
+  <style>
+    table{
+      display: table-cell;
+    }
+  </style>
+</head>
+<body>
+  <form id=job_details_form>
+    <table>
+      <tbody>
+      <tr>
+        <td><input type=text id=job_name placeholder='Job Name' required></td>
+      </tr>
+      <tr>
+        <td><textarea id=job_desc placeholder='Description' required></textarea></td>
+      </tr>
+      <tr>
+        <td><textarea id=common_errors placeholder='common_errors' required></textarea></td>
+      </tr>
+      <tr>
+        <td><textarea id=common_fix  placeholder='common_fix'></textarea></td>
+      </tr>
+      <tr>
+        <td><input type=submit id=job_details_submit value=Submit></td>
+      </tr>
+      </tbody>
+    <table>
+    <div id=response>
+      <!--response placeholder -->
+    </div>
+  </form>
+  
+  <script type=text/javascript>
+    let form = document.querySelector("#job_details_form");
+
+    const handleSubmit = async function(){
+      const data = {
+        "job_name": document.getElementById("job_name").value,
+        "job_desc":  document.getElementById("job_desc").value,
+        "common_errors": document.getElementById("common_errors").value,
+        "common_fix": document.getElementById("common_fix").value
+      }
+      const url='http://localhost:3030/capture';
+      const response = await fetch(url, {method: 'POST', 
+                        body: JSON.stringify(data),
+                        headers: {
+                          'Content-Type': 'application/json'
+                        }
+                       });
+
+      form.enabled=false;    
+      document.getElementById("response").value = response.body;  
+    }
+    
+    form.onsubmit = handleSubmit;
+  </script>
+</body>
+</html>
